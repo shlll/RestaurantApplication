@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Restaurant.Models.Type>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    var pagedList = (IPagedList)Model;
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm("Index", "Types", FormMethod.Get))
+{
+    <div class="col-lg-offset-8 form-inline" style="margin-left:350px;">
+        <input type="text" class="form-control" placeholder="Search" name="searchQuery" value="@ViewBag.SearchQuery" />
+        <button type="submit" class="btn btn-primary">Search!</button>
+    </div>
+    <br />
+}
+<div style="margin-left:350px;">
+    <a class="btn btn-primary" href="@Url.Action("Create","Types")">Create New</a>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name.RestaurantName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ratings)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name.RestaurantName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.RestaurantType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ratings)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<div style="margin-left:350px">
+    Page @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) of @pagedList.PageCount
+    @Html.PagedListPager(pagedList, page => Url.Action("Index", new { page, searchQuery = ViewBag.SearchQuery }))
+</div>
